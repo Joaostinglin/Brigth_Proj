@@ -1,0 +1,15 @@
+.card {
+      max-width: 100%;
+}
+
+.actions{
+    display: 'flex';
+}
+
+.avatar{
+    background-color: #e91e63 !important;
+}
+
+.news-content{
+    padding: 10px 30px;
+}
