@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Login from '../User/Login';
-import News from '../news/allNews/news'
-import NewsRoute from '../news/newsRouts'
-import NewsAPI from '../api/news/newsApi'
+import News from '../news/allNews/news';
+import NewsRoute from '../news/newsRouts';
+import NewsAPI from '../api/news/newsApi';
+import SignIn from '../signIn/sigIn';
 
 class Routes extends Component {
     state = {
@@ -10,7 +11,8 @@ class Routes extends Component {
         route: this.props.route,
         userData: 0,
         news: [],
-        roleId: 0
+        roleId: 0,
+        registerPage: false
     }
 
 
@@ -36,18 +38,30 @@ class Routes extends Component {
             .catch(err => console.log(err))
     }
 
+    goToRegister = (goToRegisterParam) => {
+        this.setState({
+            registerPage: goToRegisterParam
+        })
+    }
+
 
     render() {
         console.log(this.state)
         return (
             <div>
 
-                {!this.state.authentication ?
-                    <Login getAuthorized={(allowedStatus, userId, roleId) => this.authentication(allowedStatus, userId, roleId)} />
+                {!this.state.authentication && !this.state.registerPage ?
+                    <Login
+                        getAuthorized={(allowedStatus, userId, roleId) => this.authentication(allowedStatus, userId, roleId)}
+                        goToRegisterFunc={(goToRegisterParam) => this.goToRegister(goToRegisterParam)}
+                    />
                     :
-                    this.props.route == 1 ?
-                        <NewsRoute allNews={this.state.news} /> :
-                        'dasd'
+                    this.state.registerPage ?
+                        <SignIn goToRegisterFunc={(goToRegisterParam) => this.goToRegister(goToRegisterParam)} />
+                        :
+                        this.props.route == 1 ?
+                            <NewsRoute allNews={this.state.news} /> :
+                            'dasd'
                 }
             </div>
 

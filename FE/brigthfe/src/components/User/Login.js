@@ -25,6 +25,10 @@ class TextFields extends React.Component {
                 console.log(err)
                 localStorage.clear()
             })
+    };
+
+    handleSignIn = () => {
+        this.props.goToRegisterFunc(true)
     }
 
     handleChange = name => event => {
@@ -53,6 +57,10 @@ class TextFields extends React.Component {
                     />
                     <Button onClick={this.handleLogin} color="secondary" variant="contained" className="button">
                         Login
+                    </Button>
+
+                    <Button onClick={this.handleSignIn} color="primary" variant="contained" className="button">
+                        Sign In
                     </Button>
                 </form>
             </div>

@@ -2,6 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
+const jsonParse = require('../middleware/json-parse-requestBody');
+
 exports.users_get_all = (request, response) => {
     let db = new sqlite3.Database('brigth.db', sqlite3.OPEN_READWRITE, (err) => {
         if (err)
@@ -23,18 +25,20 @@ exports.users_get_all = (request, response) => {
 
 exports.users_post =  (request, response) => {
 
-    bcrypt.hash(request.body.pass, 10, (err, hash) => {
+    let requestBodyJson = jsonParse.convertToJson(request.body);
+
+    bcrypt.hash(requestBodyJson.pass, 10, (err, hash) => {
         console.log(hash)
         if (err) {
             response.status(500).json({
                 message: err.message
             })
         } else {
-            let user = new User(request.body.first_name,
-                request.body.last_name,
-                request.body.login,
+            let user = new User(requestBodyJson.first_name,
+                requestBodyJson.last_name,
+                requestBodyJson.login,
                 hash,
-                request.body.roleId)
+                requestBodyJson.roleId)
 
             console.log(user)
 
